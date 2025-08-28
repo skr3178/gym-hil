@@ -423,5 +423,8 @@ The actor’s loss includes:
 
 ![img_5.png](img_5.png)
 
+Human in Loop training
+![HIL](Franka_human_in_loop.gif)
+
 
 ##
