@@ -179,11 +179,14 @@ class PandaPickCubeGymEnv(FrankaGymEnv):
         block_pos = self._data.sensor("block_pos").data
 
         if self.reward_type == "dense":
+            # Reward for being close to cube 
+            # Total: Weighted combination of proximity and lifting rewards
             tcp_pos = self._data.sensor("2f85/pinch_pos").data
             dist = np.linalg.norm(block_pos - tcp_pos)
             r_close = np.exp(-20 * dist)
             r_lift = (block_pos[2] - self._z_init) / (self._z_success - self._z_init)
             r_lift = np.clip(r_lift, 0.0, 1.0)
+            # rewards being close to cube and lifting the cube
             return 0.3 * r_close + 0.7 * r_lift
         else:
             lift = block_pos[2] - self._z_init
@@ -195,6 +198,8 @@ class PandaPickCubeGymEnv(FrankaGymEnv):
         tcp_pos = self._data.sensor("2f85/pinch_pos").data
         dist = np.linalg.norm(block_pos - tcp_pos)
         lift = block_pos[2] - self._z_init
+        # Gripper is within 5cm of the cube (dist < 0.05)
+        # Cube is lifted more than 10cm above initial position (lift > 0.1)
         return dist < 0.05 and lift > 0.1
 
 

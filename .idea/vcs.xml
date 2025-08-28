@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/franka_sim_pick_lift_6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gym-lowcostrobot" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/gym-soarm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lerobot-example-config-files" vcs="Git" />
+  </component>
+</project>

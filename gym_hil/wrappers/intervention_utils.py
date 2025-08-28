@@ -145,20 +145,36 @@ class KeyboardController(InputController):
             try:
                 if key == keyboard.Key.up:
                     self.key_states["forward_x"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.down:
                     self.key_states["backward_x"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.left:
                     self.key_states["forward_y"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.right:
                     self.key_states["backward_y"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.shift:
                     self.key_states["backward_z"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.shift_r:
                     self.key_states["forward_z"] = True
+                    # Auto-enable intervention when movement key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.ctrl_r:
                     self.open_gripper_command = True
+                    # Auto-enable intervention when gripper key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.ctrl_l:
                     self.close_gripper_command = True
+                    # Auto-enable intervention when gripper key is pressed
+                    self.key_states["intervention"] = True
                 elif key == keyboard.Key.enter:
                     self.key_states["success"] = True
                     self.episode_end_status = "success"
@@ -166,6 +182,7 @@ class KeyboardController(InputController):
                     self.key_states["failure"] = True
                     self.episode_end_status = "failure"
                 elif key == keyboard.Key.space:
+                    # Keep spacebar as manual toggle for cases where you want persistent intervention
                     self.key_states["intervention"] = not self.key_states["intervention"]
                 elif key == keyboard.Key.r:
                     self.key_states["rerecord"] = True
@@ -190,6 +207,16 @@ class KeyboardController(InputController):
                     self.open_gripper_command = False
                 elif key == keyboard.Key.ctrl_l:
                     self.close_gripper_command = False
+                
+                # Auto-disable intervention when no movement keys are active
+                if not any([
+                    self.key_states["forward_x"], self.key_states["backward_x"],
+                    self.key_states["forward_y"], self.key_states["backward_y"],
+                    self.key_states["forward_z"], self.key_states["backward_z"],
+                    self.open_gripper_command, self.close_gripper_command
+                ]):
+                    self.key_states["intervention"] = False
+                    
             except AttributeError:
                 pass
 
@@ -197,13 +224,14 @@ class KeyboardController(InputController):
         self.listener.start()
 
         print("Keyboard controls:")
-        print("  Arrow keys: Move in X-Y plane")
-        print("  Shift and Shift_R: Move in Z axis")
-        print("  Right Ctrl and Left Ctrl: Open and close gripper")
+        print("  Arrow keys: Move in X-Y plane (auto-enables intervention)")
+        print("  Shift and Shift_R: Move in Z axis (auto-enables intervention)")
+        print("  Right Ctrl and Left Ctrl: Open and close gripper (auto-enables intervention)")
         print("  Enter: End episode with SUCCESS")
         print("  Backspace: End episode with FAILURE")
-        print("  Space: Start/Stop Intervention")
+        print("  Space: Manual toggle intervention on/off")
         print("  ESC: Exit")
+        print("  Note: Intervention automatically enables when using movement keys and disables when released")
 
     def stop(self):
         """Stop the keyboard listener."""

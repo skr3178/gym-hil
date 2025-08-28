@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "gym_hil/**"
-      - "tests/**"
+      - "../../trial/**"
       - "examples.py"
       - ".github/**"
       - "poetry.lock"
@@ -15,7 +15,7 @@ on:
       - main
     paths:
       - "gym_hil/**"
-      - "tests/**"
+      - "../../trial/**"
       - "examples.py"
       - ".github/**"
       - "poetry.lock"
@@ -25,7 +25,7 @@ jobs:
     name: Pytest
     runs-on: ubuntu-latest
     env:
-      DATA_DIR: tests/data
+      DATA_DIR: trial/data
       MUJOCO_GL: egl
     steps:
       - uses: actions/checkout@v4
