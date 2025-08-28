@@ -1,0 +1,5 @@
+ReachCube-v0:
+  n_timesteps: !!float 1e7
+  policy: 'MultiInputPolicy'
+  frame_stack: 3
+  use_sde: True
